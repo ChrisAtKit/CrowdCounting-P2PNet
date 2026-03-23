@@ -53,12 +53,12 @@ def get_args_parser():
 
     # dataset parameters
     parser.add_argument('--dataset_file', default='SHHA')
-    parser.add_argument('--data_root', default='./new_public_density_data',
+    parser.add_argument('--data_root', default='./data/SHHA/',
                         help='path where the dataset is')
     
-    parser.add_argument('--output_dir', default='./log',
+    parser.add_argument('--output_dir', default='./logs',
                         help='path where to save, empty for no saving')
-    parser.add_argument('--checkpoints_dir', default='./ckpt',
+    parser.add_argument('--checkpoints_dir', default='./ckpts',
                         help='path where to save checkpoints, empty for no saving')
     parser.add_argument('--tensorboard_dir', default='./runs',
                         help='path where to save, empty for no saving')
@@ -69,7 +69,7 @@ def get_args_parser():
                         help='start epoch')
     parser.add_argument('--eval', action='store_true')
     parser.add_argument('--num_workers', default=8, type=int)
-    parser.add_argument('--eval_freq', default=5, type=int,
+    parser.add_argument('--eval_freq', default=1, type=int,
                         help='frequency of evaluation, default setting is evaluating in every 5 epoch')
     parser.add_argument('--gpu_id', default=0, type=int, help='the gpu used for training')
 
@@ -88,7 +88,9 @@ def main(args):
     print(args)
     with open(run_log_name, "a") as log_file:
         log_file.write("{}".format(args))
-    device = torch.device('cuda')
+
+    #device = torch.device('cuda')
+    device = torch.device('cpu')
     # fix the seed for reproducibility
     seed = args.seed + utils.get_rank()
     torch.manual_seed(seed)
