@@ -29,9 +29,9 @@ def get_args_parser():
     parser.add_argument('--line', default=2, type=int,
                         help="line number of anchor points")
 
-    parser.add_argument('--output_dir', default='',
+    parser.add_argument('--output_dir', default='./logs/',
                         help='path where to save')
-    parser.add_argument('--weight_path', default='',
+    parser.add_argument('--weight_path', default='./weights/SHTechA.pth',
                         help='path where the trained weights saved')
 
     parser.add_argument('--gpu_id', default=0, type=int, help='the gpu used for evaluation')
@@ -43,7 +43,8 @@ def main(args, debug=False):
     os.environ["CUDA_VISIBLE_DEVICES"] = '{}'.format(args.gpu_id)
 
     print(args)
-    device = torch.device('cuda')
+    device = torch.device('cpu')
+    #device = torch.device('cuda')
     # get the P2PNet
     model = build_model(args)
     # move to GPU
@@ -61,7 +62,7 @@ def main(args, debug=False):
     ])
 
     # set your image path here
-    img_path = "./vis/demo1.jpg"
+    img_path = "./vis/demo2.jpg"
     # load the images
     img_raw = Image.open(img_path).convert('RGB')
     # round the size
