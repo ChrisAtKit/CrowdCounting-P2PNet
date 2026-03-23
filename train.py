@@ -89,8 +89,8 @@ def main(args):
     with open(run_log_name, "a") as log_file:
         log_file.write("{}".format(args))
 
-    #device = torch.device('cuda')
-    device = torch.device('cpu')
+    device = torch.device('cuda')
+    #device = torch.device('cpu')
     # fix the seed for reproducibility
     seed = args.seed + utils.get_rank()
     torch.manual_seed(seed)
