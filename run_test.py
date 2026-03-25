@@ -31,7 +31,7 @@ def get_args_parser():
 
     parser.add_argument('--output_dir', default='./logs/',
                         help='path where to save')
-    parser.add_argument('--weight_path', default='./weights/SHTechA.pth',
+    parser.add_argument('--weight_path', default='./ckpts/FH_best_mae_12_e214_.pth', #./weights/SHTechA.pth
                         help='path where the trained weights saved')
 
     parser.add_argument('--gpu_id', default=0, type=int, help='the gpu used for evaluation')
@@ -62,7 +62,7 @@ def main(args, debug=False):
     ])
 
     # set your image path here
-    img_path = "./vis/demo1.jpg"
+    img_path = "./vis/demo2.jpg"
     # load the images
     img_raw = Image.open(img_path).convert('RGB')
     # round the size

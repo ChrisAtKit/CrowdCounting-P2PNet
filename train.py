@@ -19,7 +19,7 @@ def get_args_parser():
     parser = argparse.ArgumentParser('Set parameters for training P2PNet', add_help=False)
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_backbone', default=1e-5, type=float)
-    parser.add_argument('--batch_size', default=8, type=int)
+    parser.add_argument('--batch_size', default=2, type=int)
     parser.add_argument('--weight_decay', default=1e-4, type=float)
     parser.add_argument('--epochs', default=3500, type=int)
     parser.add_argument('--lr_drop', default=3500, type=int)
@@ -52,8 +52,8 @@ def get_args_parser():
                         help="line number of anchor points")
 
     # dataset parameters
-    parser.add_argument('--dataset_file', default='SHHA')
-    parser.add_argument('--data_root', default='./data/SHHA/',
+    parser.add_argument('--dataset_file', default='QNRF')
+    parser.add_argument('--data_root', default='H:/Uni/datasets/npy_conv_datasets/QNRF', #./data/SHHA/ #H:/Uni/datasets/npy_conv_datasets/FH
                         help='path where the dataset is')
     
     parser.add_argument('--output_dir', default='./logs',
@@ -64,7 +64,7 @@ def get_args_parser():
                         help='path where to save, empty for no saving')
 
     parser.add_argument('--seed', default=42, type=int)
-    parser.add_argument('--resume', default='', help='resume from checkpoint')
+    parser.add_argument('--resume', default='', help='resume from checkpoint') #./ckpts/latest.pth
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
     parser.add_argument('--eval', action='store_true')
@@ -184,7 +184,7 @@ def main(args):
             'model': model_without_ddp.state_dict(),
         }, checkpoint_latest_path)
         # run evaluation
-        if epoch % args.eval_freq == 0 and epoch != 0:
+        if epoch % args.eval_freq == 0:
             t1 = time.time()
             result = evaluate_crowd_no_overlap(model, data_loader_val, device)
             t2 = time.time()

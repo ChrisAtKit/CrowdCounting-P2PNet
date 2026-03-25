@@ -82,11 +82,19 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
     metric_logger = utils.MetricLogger(delimiter="  ")
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     # iterate all training samples
+    maes = []
+
     for samples, targets in data_loader:
         samples = samples.to(device)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
         # forward
         outputs = model(samples)
+        #debug with mae score of train
+        outputs_scores_t = torch.nn.functional.softmax(outputs['pred_logits'], -1)[:, :, 1][0]
+        mae = abs(int((outputs_scores_t > 0.5).sum()) - targets[0]['point'].shape[0])
+        maes.append(float(mae))
+
+
         # calc the losses
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
@@ -115,6 +123,9 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         # update logger
         metric_logger.update(loss=loss_value, **loss_dict_reduced_scaled, **loss_dict_reduced_unscaled)
         metric_logger.update(lr=optimizer.param_groups[0]["lr"])
+
+    #debug output
+    print(f"MAE: {np.mean(maes)}")
     # gather the stats from all processes
     metric_logger.synchronize_between_processes()
     print("Averaged stats:", metric_logger)

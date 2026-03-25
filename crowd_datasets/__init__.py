@@ -4,4 +4,13 @@ def build_dataset(args):
         from crowd_datasets.SHHA.loading_data import loading_data
         return loading_data
 
+    if args.dataset_file == 'FH':
+        from crowd_datasets.FH.loading_data import loading_data
+        return loading_data
+
+    if args.dataset_file == 'QNRF':
+        from crowd_datasets.QNRF.loading_data import loading_data
+        return loading_data
+
+
     return None
